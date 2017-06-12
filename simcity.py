@@ -1,3 +1,6 @@
+import pickle
+
+
 class City:
     def __init__(self, name):
         self.name = name
@@ -18,6 +21,15 @@ class City:
 
     def remove_street(self, name):
         del self.streets[name]
+
+    @classmethod
+    def load(cls, file_name):
+        with open(file_name, 'rb') as f:
+            return pickle.load(f)
+
+    def save(self, file_name):
+        with open(file_name, 'wb') as f:
+            pickle.dump(self, f)
 
 
 class Street:

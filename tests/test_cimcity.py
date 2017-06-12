@@ -1,4 +1,5 @@
 import pytest
+import os
 
 from simcity import City
 
@@ -11,6 +12,7 @@ TEST_POPULATION = 500
 @pytest.fixture
 def city():
     return City(TEST_CITY_NAME)
+
 
 @pytest.fixture
 def street(city):
@@ -41,3 +43,11 @@ def test_population(city, street):
     city.remove_street(TEST_STREET_NAME)
     assert city.population == 0
 
+
+@pytest.mark.usefixtures('house')
+def test_save_load(city):
+    city.save('test_city.dat')
+    assert os.path.isfile('test_city.dat')
+
+    city = City.load('test_city.dat')
+    assert city.population == TEST_POPULATION
